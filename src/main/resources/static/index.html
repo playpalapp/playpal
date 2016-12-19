@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<style>
+    .icon-background1 {
+        color: #ffc0ff;
+    }
+
+    .circle-icon {
+        background: #ffc0c0;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 100px;
+        vertical-align: middle;
+        padding: 30px;
+    }
+</style>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PlayPal Games</title>
+
+
+    <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/adaptive.css">
+    <link rel="stylesheet" type="text/css" href="css/pushy.css">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="css/animate.css">
+    <link rel="stylesheet" type="text/css" href="rs-plugin/css/settings.css" media="screen" />
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+</head>
+
+<body class="promo" ng-app="playpalApp">
+<div class="add_place none" id="autorized">
+    <div class="place_form login_form">
+        <i class="fa fa-times close_window" id="closeau"></i>
+        <h3>Autorization<span></span></h3>
+        <form>
+            <label>Login:
+                <input type="text">
+            </label>
+            <label>Password:
+                <input type="text">
+            </label>
+            <a href="#" class="btn btn-primary"><i class="icon-facebook"></i>Log in with Facebook</a>
+        </form>
+    </div>
+</div>
+<div class="add_place none" id="pl" ng-controller="indexController">
+    <div class="place_form">
+        <i class="fa fa-times close_window" id="close"></i>
+        <h3>Never Miss A Game<span></span></h3>
+        <form>
+            <div class="row">
+                <div class="col-md-12">
+                    <label>
+                        <input placeholder="Enter email" type="text">
+                    </label>
+                </div>
+                <div class="">
+                    <p> <i class="fa fa-rss-square" aria-hidden="true"></i> Sign-up to receive a weekly schedule of upcoming games.<br> No spamming - promise.</p>
+                </div>
+            </div>
+            <a href="#" class="green_btn_header" id="add">Submite</a>
+        </form>
+    </div>
+</div>
+
+<div id="container">
+    <div class="top_promo_block" id="promo_head">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="header_promo" style="position: relative; left: -5%; width: auto; vertical-align: center; ">
+                        <img src="img/start/logo.png" alt="#">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="start_descrition">
+            <h1 class="planet" style="font-family: Planet; text-transform: capitalize;">Play pick-up soccer in KC - for free!</h1>
+            <div class="col-md-12">
+                <span><p class="sub-tittle" style="font-weight: 600;">Find the players and games<br> YOU are looking for. <br>And help them find you.</p></span></div>
+            <div class="btn_promo_search submit_buttons" style="text-align: center; ">
+                <div class="row" style=" margin-top: 5%;">
+                    <div class="bt1 col-md-3 col-md-offset-3">
+                        <a href="games.html"> <button style="font-weight: bold;" type="button" class="btn btn-success-default">Game Boards</button></a>
+                    </div>
+                    <div class="bt2 col-md-3">
+                        <a id="ad">
+                            <button style="font-weight: bold;" type="button" class="btn btn-success-default">E-mail Sign-Up</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="social_buttons">
+            <i class="fa fa-share-alt-square social_bt" aria-hidden="true"></i>
+            <i class="fa fa-twitter-square social_bt" aria-hidden="true"></i>
+            <i class="fa fa-facebook-square social_bt" aria-hidden="true"></i>
+            <i class="fa fa-envelope-square social_bt" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+
+</body>
+
+
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCsbzuJDUEOoq-jS1HO-LUXW4qo0gW9FNs"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/wow.min.js"></script>
+<script src="js/all_scr.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/jquery.parallax-0.2-min.js"></script>
+
+<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+<script src="libs/angular/angular-ui-router.min.js"></script>
+<script src="libs/angular/angular-locale_pt-br.min.js"></script>
+<script type="text/javascript" src="app/application/app.js"></script>
+
+<script type="text/javascript">
+    "use strict";
+    setHeiHeight();
+    $(window).resize(setHeiHeight);
+</script>
+
+</html>
