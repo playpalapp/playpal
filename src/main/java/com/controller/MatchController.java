@@ -80,6 +80,8 @@ public class    MatchController {
             b.stream().sorted(new Comparator<Match>() {
                 @Override
                 public int compare(Match o1, Match o2) {
+                    System.out.println("DATA I" + o1.toString());
+                    System.out.println("DATA II" + o2.toString());
                     return o1.getDate().compareTo(o2.getDate());
                 }
             });

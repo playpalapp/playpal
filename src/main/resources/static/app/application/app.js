@@ -37,18 +37,9 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
     $scope.matchs ={};
 
     $scope.ampm = function (date) {
+        console.log(date);
         var hours = new Date(date).getHours();
-        var hours = (hours+24-2)%24;
-        var mid='AM';
-        if(hours==0){ //At 00 hours we need to show 12 am
-            hours=12;
-        }
-        else if(hours>12)
-        {
-            hours=hours%12;
-            mid='PM';
-        }
-        return mid;
+        return hours >= 12 ? "PM" : "AM";
     }
     //Declarações de funçōes
 
@@ -198,12 +189,18 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
                 // the estimated date timestamp
                 case 200:
                     $scope.matchs = response.data;
+                    for (var i = 0; i < $scope.matchs.length; i++) {
+                        $scope.matchs[i].date = new Date($scope.matchs[i].date);
+                    }
                     $scope.gameList = Object.keys(response.data);
+                    console.log("ANTES", $scope.gameList, response.data);
                     $scope.gameList.sort(function(a,b) {
                         a = a.split('/').reverse().join('');
                         b = b.split('/').reverse().join('');
                         return a > b ? 1 : a < b ? -1 : 0;
                     });
+
+                    console.log("depois", $scope.gameList, response.data);
 
                     codeAddress($scope.matchs[$scope.gameList[0]][0])
                 // the response object
