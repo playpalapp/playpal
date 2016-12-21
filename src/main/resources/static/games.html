@@ -133,7 +133,7 @@
                         <div class="row eventCard" ng-repeat="game in matchs[d]" ng-click="findGame(game)">
                             <div class="col-md-4 cardSquare">
                                 <!--<h2>{{game.date| date:"shortTime"}}</h2> -->
-                                <h2>{{game.date| date:"shortTime"}} {{ampm(game.date)}}</h2>
+                                <h2>{{ getHours(game.date) }}:{{ getMin(game.date)}}  {{ampm(game.date)}}</h2>
                                 <h4>{{game.numberOfPlayers - game.players.length == 0? "FULL - 0" : "OPEN - " + (game.numberOfPlayers - game.players.length)}}</h4>
                             </div>
                             <div class="col-md-8 cardDescription">

@@ -36,6 +36,19 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
 
     $scope.matchs ={};
 
+    $scope.getHours = function(date) {
+        var d = new Date(date);
+        return d.getHours() % 12;
+    };
+
+    $scope.getMin = function(date) {
+        var d = new Date(date);
+
+        return d.getMinutes();
+    };
+
+
+
     $scope.ampm = function (date) {
         console.log(date);
         var hours = new Date(date).getHours();
