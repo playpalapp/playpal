@@ -80,7 +80,7 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
 
         codeAddress(game);
     }
-    
+
     //cria um novo jogo
     $scope.createGame = function() {
         var time = $('#inputdate').val();
@@ -99,7 +99,11 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
             return
         }
 
-
+        $scope.order = function(a, b) {
+            a = a.split('/').reverse().join('');
+            b = b.split('/').reverse().join('');
+            return a > b ? 1 : a < b ? -1 : 0;
+        };
 
 
 
@@ -121,14 +125,12 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
         }).
         success(function(response) {
             if(Object.keys(response).length  > 0){
-
+                console.log("matchs", $scope.matchs);
                 $scope.matchs = response;
+                burn($scope.matchs);
                 $scope.gameList = Object.keys(response);
-                $scope.gameList.sort(function(a,b) {
-                    a = a.split('/').reverse().join('');
-                    b = b.split('/').reverse().join('');
-                    return a > b ? 1 : a < b ? -1 : 0;
-                });
+                console.log("game list", $scope.gameList);
+                $scope.gameList.sort($scope.order);
                 $('#myModal').modal('toggle');
 
 
@@ -202,16 +204,14 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
                 // the estimated date timestamp
                 case 200:
                     $scope.matchs = response.data;
+                    console.log("DATA", response.data);
                     for (var i = 0; i < $scope.matchs.length; i++) {
                         $scope.matchs[i].date = new Date($scope.matchs[i].date);
                     }
+                    burn($scope.matchs);
                     $scope.gameList = Object.keys(response.data);
                     console.log("ANTES", $scope.gameList, response.data);
-                    $scope.gameList.sort(function(a,b) {
-                        a = a.split('/').reverse().join('');
-                        b = b.split('/').reverse().join('');
-                        return a > b ? 1 : a < b ? -1 : 0;
-                    });
+                    $scope.gameList.sort($scope.order);
 
                     console.log("depois", $scope.gameList, response.data);
 
@@ -223,6 +223,17 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
             }
         });
 
+    function burn(lista) {
+        console.log("BURN", lista);
+        for (var i = 0; i < Object.keys(lista).length; i++) {
+            var el = lista[Object.keys(lista)[i]];
+            console.log("ELEMENT", el);
+            el.sort(function(a, b) {
+                console.log("A", new Date(a.date), "B", new Date(b.date));
+                return a.date - b.date;
+            });
+        }
+    }
 
 
     $scope.openInfoWindow = function(e, selectedMarker){
