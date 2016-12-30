@@ -114,7 +114,7 @@
                 </div>
             </div>
             <div class="game_descrition">
-                <h1 class="planet" style="font-family: Planet; text-transform: capitalize;">Games Board</h1>
+                <h1 class="planet" style="font-family: Planet; text-transform: capitalize; color: white; text-align: center">Games Board</h1>
                 <div class="submit_button" style="text-align: center; ">
                     <div class="col-md-12">
                         <a id="ad">
@@ -127,8 +127,8 @@
                 <div class="col-md-12 games">
                     <div class="col-md-6 gamesList">
                         <div ng-repeat="d in gameList">
-                        <div class="col-md-12 cardHeader" style="margin-left: -1.1em; width: 105.5%;">
-                            <label style="font-size: 1.5em; padding-top: 0.2em;">{{ d }}</label>
+                        <div class="row cardHeader" style="margin-left: -1.1em; width: 111.5%;">
+                            <label style="font-size: 1.5em; padding-top: 0.2em; margin-left: 43.3%">{{ d }}</label>
                         </div>
                         <div class="row eventCard" ng-repeat="game in matchs[d]" ng-click="findGame(game)">
                             <div class="col-md-4 cardSquare">
