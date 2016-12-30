@@ -1,5 +1,5 @@
 // app.js
-var app = angular.module('playpalApp', []);
+var app = angular.module('playpalApp', ['firebase']);
 
 angular.module('playpalApp').controller('gamesController', function ($scope, $timeout, $http, $q) {
 
@@ -316,3 +316,37 @@ angular.module('playpalApp').factory('playpalSrvc', function($http, $q) {
 
     };
 });
+
+app.controller('chatController', ['$scope','Message', function($scope,Message){
+
+    $scope.user="Guest";
+
+    $scope.messages= Message.all;
+
+    $scope.inserisci = function(message){
+        Message.create(message);
+    };
+}]);
+
+app.factory('Message', ['$firebaseArray', '$firebaseArray',
+    function($firebaseArray, $firebaseArray) {
+        var ref = firebase.database().ref();
+        var messages = $firebaseArray(ref);
+
+        var Message = {
+            all: messages,
+            create: function (message) {
+                return messages.$add(message);
+            },
+            get: function (messageId) {
+                return messages.child(messageId).$asObject();
+            },
+            delete: function (message) {
+                return messages.$remove(message);
+            }
+        };
+
+        return Message;
+
+    }
+]);

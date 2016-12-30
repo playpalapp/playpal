@@ -114,9 +114,9 @@
                 </div>
                 <div class="modal-body">
                     <div ng-controller="chatController" >
-                        <p>Nome : <input type="text" ng-model="newmessage.user"></p>
-                        <p>Messaggio :<input type="text" ng-model="newmessage.text"></p>
-                        <button ng-click="inserisci(newmessage)">Invia</button>
+                        <p>User : <input type="text" ng-model="newmessage.user"></p>
+                        <p>Messa :<input type="text" ng-model="newmessage.text"></p>
+                        <button ng-click="inserisci(newmessage)">Send</button>
 
                         <ul>
                             <li ng-repeat="message in messages">
@@ -208,6 +208,11 @@
 <script src="libs/angular/angular-ui-router.min.js"></script>
 <script src="libs/angular/angular-locale_pt-br.min.js"></script>
 
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+
+<!-- AngularFire -->
+<script src="https://cdn.firebase.com/libs/angularfire/2.2.0/angularfire.min.js"></script>
 <link rel="stylesheet" href="css/maps.css">
 <script type="text/javascript" src="app/application/app.js"></script>
 <script type="text/javascript" src="app/application/properties.js"></script>
@@ -228,6 +233,20 @@
     setHeiHeight();
     $(window).resize(setHeiHeight);
 </script>
+
+<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+<script>
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyBFXTLlhfN8AsuBUUO3y1hdNFSyH6WYhhc",
+        authDomain: "playpal-84c41.firebaseapp.com",
+        databaseURL: "https://playpal-84c41.firebaseio.com",
+        storageBucket: "playpal-84c41.appspot.com",
+        messagingSenderId: "310505909605"
+    };
+    firebase.initializeApp(config);
+</script>
+
 <script type="text/javascript">
 
     $(function () {
