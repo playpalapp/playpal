@@ -250,11 +250,31 @@
 <script type="text/javascript">
 
     $(function () {
-        $('#datetimepicker1').datetimepicker({
+        var DTP = $('#datetimepicker1').datetimepicker({
             daysOfWeekDisabled: [],
             defaultDate:new Date()
         });
 
+        DTP.on("dp.change", function(e) {
+            var antiga = new Date(e.oldDate._d);
+            var atual = new Date(e.date._d);
+
+            console.log("antigo ", antiga.getDay(), "atual", atual.getDay());
+
+            if (antiga.getHours() == 23 && atual.getHours() == 0 && antiga.getDay() - atual.getDay() == -1) {
+                console.log("aumentou um dia", antiga.getDay() - atual.getDay());
+                atual.setDate(antiga.getDay() + 1);
+                $('#datetimepicker1').data("DateTimePicker").date(moment(atual).format('MM/DD/YYYY'));
+                e.stopPropagation();
+                return;
+            } /*else if (antiga.getHours() == 0 && atual.getHours() == 23) {
+                console.log("diminiu um dia", antiga.getDay() - atual.getDay());
+                atual.setDate(antiga.getDay() + 1);
+                $('#datetimepicker1').data("DateTimePicker").date(moment(atual).format('MM/DD/YYYY'));
+                e.stopPropagation();
+                return;
+            }*/
+        });
     });
 </script>
 
