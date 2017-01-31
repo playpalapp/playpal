@@ -38,13 +38,21 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
 
     $scope.getHours = function(date) {
         var d = new Date(date);
-        return d.getHours() % 12;
+
+        var result = d.getHours() % 12;
+
+        if (result == 0) {
+            result = 12;
+        }
+        return result;
     };
 
     $scope.getMin = function(date) {
         var d = new Date(date);
 
-        return d.getMinutes();
+        var result = d.getMinutes();
+        if (result == 0) { result = "00";}
+        return result;
     };
 
 
@@ -177,9 +185,12 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
                     map     : map,
                     position: results[0].geometry.location
                 } );
+                console.log(game);
+                var date = new Date(game.date);
+                date = date.toString().split(" ");
                 info = {
                     city : game.city,
-                        desc : game.name,
+                        desc : "At " + date[2] + "/" + date[1] + " " + date[4].slice(0, 5) + " Gender: " + game.gender + " Intensity: " + game.intensityLevel,
                     lat :
                         results[0].geometry.location.lat(),
                     long : results[0].geometry.location.lng()

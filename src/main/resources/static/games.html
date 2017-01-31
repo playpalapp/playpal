@@ -37,66 +37,74 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 
 </head>
-<body  class="promo" ng-app="playpalApp">
+<body class="promo" ng-app="playpalApp">
 <div ng-controller="gamesController">
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" ng-click="closeCreateGame()" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" ng-click="closeCreateGame()" class="close" data-dismiss="modal"
+                            aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title" >Create Game</h4>
+                    <h4 class="modal-title">Create Game</h4>
                 </div>
                 <div class="modal-body">
-                    <span  style="color:red" ng-show="form.error">Complete all the fields correctly</span>
+                    <span style="color:red" ng-show="form.error">Complete all the fields correctly</span>
                     <form>
-                    <div class="row ">
-                        <div class="col-md-6">
-                            <label>Name:
-                                <input ng-model="newgame.name" placeholder="Name" type="text"  class="form-control">
-                            </label>
-                            <label>Intensity:
-                                <select ng-model="newgame.intensityLevel" class="form-control col-md-2">
-                                    <option value="BEGINNER">Beginner</option>
-                                    <option value="ADVANCED">Advanced</option>
-                                    <option value="ALL">All</option>
-                                </select>
-                            </label>
-                            <label>Gender:
-                                <select ng-model="newgame.gender" class="form-control col-md-2">
-                                    <option value="MALE">Male</option>
-                                    <option value="FEMALE">Female</option>
-                                    <option value="COED">Co-Ed</option>
-                                </select>
-                            </label>
-                            <label>Number of Players:
-                                <input type="number" min="1" ng-model="newgame.numberOfPlayers" class="form-control">
-                            </label>
-                        </div>
-                        <div class="col-md-6">
-                            <label>Location:
-                                <input ng-model="newgame.street" placeholder="Street" type="text" class="form-control col-md-6">
-                                <input ng-model="newgame.city" placeholder="City" type="text" class="form-control col-md-6">
-                                <input ng-model="newgame.state" placeholder="State" type="text" class="form-control col-md-6">
-                                <input ng-model="newgame.zipcode" placeholder="Zipcode" type="text" class="form-control col-md-6">
-                            </label>
-                            <label>Date/Hour:
+                        <div class="row ">
+                            <div class="col-md-6">
+                                <label>Name:
+                                    <input ng-model="newgame.name" placeholder="Name" type="text" class="form-control">
+                                </label>
+                                <label>Intensity:
+                                    <select ng-model="newgame.intensityLevel" class="form-control col-md-2">
+                                        <option value="BEGINNER">Beginner</option>
+                                        <option value="ADVANCED">Advanced</option>
+                                        <option value="ALL">All</option>
+                                    </select>
+                                </label>
+                                <label>Gender:
+                                    <select ng-model="newgame.gender" class="form-control col-md-2">
+                                        <option value="MALE">Male</option>
+                                        <option value="FEMALE">Female</option>
+                                        <option value="COED">Co-Ed</option>
+                                    </select>
+                                </label>
+                                <label>Number of Players:
+                                    <input type="number" min="1" ng-model="newgame.numberOfPlayers"
+                                           class="form-control">
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Location:
+                                    <input ng-model="newgame.street" placeholder="Street" type="text"
+                                           class="form-control col-md-6">
+                                    <input ng-model="newgame.city" placeholder="City" type="text"
+                                           class="form-control col-md-6">
+                                    <input ng-model="newgame.state" placeholder="State" type="text"
+                                           class="form-control col-md-6">
+                                    <input ng-model="newgame.zipcode" placeholder="Zipcode" type="text"
+                                           class="form-control col-md-6">
+                                </label>
+                                <label>Date/Hour:
 
-                                <div class='input-group date' id='datetimepicker1'>
-                                    <input id="inputdate" type="text" class="form-control" />
-                                    <span class="input-group-addon">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input id="inputdate" type="text" class="form-control"/>
+                                        <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
-                                </div>
+                                    </div>
 
-                            </label>
+                                </label>
+                            </div>
                         </div>
-                    </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" ng-click="closeCreateGame()" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" ng-click="closeCreateGame()" data-dismiss="modal">
+                        Close
+                    </button>
                     <button type="submit" class="btn btn-danger" ng-click="createGame()">Save Game</button>
                 </div>
             </div>
@@ -107,13 +115,14 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" ng-click="closeCreateGame()" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" ng-click="closeCreateGame()" class="close" data-dismiss="modal"
+                            aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title" >Chat</h4>
+                    <h4 class="modal-title">Chat</h4>
                 </div>
                 <div class="modal-body">
-                    <div ng-controller="chatController" >
+                    <div ng-controller="chatController">
                         <p>User : <input type="text" ng-model="newmessage.user"></p>
                         <p>Messa :<input type="text" ng-model="newmessage.text"></p>
                         <button ng-click="inserisci(newmessage)">Send</button>
@@ -126,7 +135,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" ng-click="closeCreateGame()" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" ng-click="closeCreateGame()" data-dismiss="modal">
+                        Close
+                    </button>
                 </div>
             </div>
         </div>
@@ -135,21 +146,20 @@
 
     <div id="container">
         <div class="top_promo_block" id="promo_head">
-            <div class="container">
+            <a href="index.html">
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="header_promo" style="">
-                            <img src="img/start/logo.png" alt="#">
-                        </div>
-                    </div>
+                    <img src="img/start/logo.png" style="margin-left: 20px;" alt="#/index.html">
                 </div>
-            </div>
+            </a>
             <div class="game_descrition">
-                <h1 class="planet" style="font-family: Planet; text-transform: capitalize; color: white; text-align: center">Games Board</h1>
+                <h1 class="planet"
+                    style="font-family: Planet; text-transform: capitalize; color: white; text-align: center">Games
+                    Board</h1>
                 <div class="submit_button" style="text-align: center; ">
                     <div class="col-md-12">
                         <a id="ad">
-                            <button type="button" class="btn btn-success-default" data-toggle="modal" data-target="#myModal">
+                            <button type="button" class="btn btn-success-default" data-toggle="modal"
+                                    data-target="#myModal">
                                 Start a Game
                             </button>
                         </a>
@@ -158,31 +168,31 @@
                 <div class="col-md-12 games">
                     <div class="col-md-6 gamesList">
                         <div ng-repeat="d in gameList">
-                        <div class="row cardHeader" style="margin-left: -1.1em; width: 111.5%;">
-                            <label style="font-size: 1.5em; padding-top: 0.2em; margin-left: 43.3%">{{ d }}</label>
-                        </div>
-                        <div class="row eventCard" ng-repeat="game in matchs[d]" ng-click="findGame(game)">
-                            <div class="col-md-4 cardSquare">
-                                <!--<h2>{{game.date| date:"shortTime"}}</h2> -->
-                                <h2>{{ getHours(game.date) }}:{{ getMin(game.date)}}  {{ampm(game.date)}}</h2>
-                                <h4>{{game.numberOfPlayers - game.players.length == 0? "FULL - 0" : "OPEN - " + (game.numberOfPlayers - game.players.length)}}</h4>
+                            <div class="row cardHeader" style="margin-left: -1.1em; width: 111.5%;">
+                                <label style="font-size: 1.5em; padding-top: 0.2em; margin-left: 43.3%">{{ d }}</label>
                             </div>
-                            <div class="col-md-8 cardDescription">
-                                <h4><strong> Location:</strong> {{game.street}}, {{game.city}}, {{game.state}},
-                                    {{game.zipcode}}</h4>
-                                <h4><strong> Gender:</strong> {{game.gender =="COED"?"Co-Ed":game.gender}}</h4>
-                                <h4><strong> Intensity:</strong> {{game.intensityLevel}}</h4>
+                            <div class="row eventCard" ng-repeat="game in matchs[d]" ng-click="findGame(game)">
+                                <div class="col-md-4 cardSquare">
+                                    <!--<h2>{{game.date| date:"shortTime"}}</h2> -->
+                                    <h2>{{ getHours(game.date) }}:{{ getMin(game.date)}} {{ampm(game.date)}}</h2>
+                                    <h4>{{game.numberOfPlayers - game.players.length == 0? "FULL - 0" : "OPEN - " +
+                                        (game.numberOfPlayers - game.players.length)}}</h4>
+                                </div>
+                                <div class="col-md-8 cardDescription">
+                                    <h4><strong> Location:</strong> {{game.street}}, {{game.city}}, {{game.state}},
+                                        {{game.zipcode}}</h4>
+                                    <h4><strong> Gender:</strong> {{game.gender =="COED"?"Co-Ed":game.gender}}</h4>
+                                    <h4><strong> Intensity:</strong> {{game.intensityLevel}}</h4>
+                                </div>
+                                <button type="button" class="glyphicon glyphicon-envelope btn pull-right"
+                                        style="margin-right: 1em; margin-bottom: 1em" data-toggle="modal"
+                                        data-target="#chat"></button>
                             </div>
-                            <button type="button" class="glyphicon glyphicon-envelope btn pull-right" style="margin-right: 1em; margin-bottom: 1em" data-toggle="modal" data-target="#chat"></button>
-                        </div>
                         </div>
                     </div>
-                    <div class="col-md-6 gamesList" >
-                        <div>
-                            <div >
-                                <div id="map"></div>
-                            </div>
-                        </div>
+                    <div class="col-md-6 gamesList">
+                        <div id="map" style="position: inherit; width: 100%;
+    height: 100%;"></div>
                     </div>
                 </div>
             </div>
@@ -190,11 +200,11 @@
     </div>
 </div>
 </body>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsbzuJDUEOoq-jS1HO-LUXW4qo0gW9FNs"></script>
+<script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsbzuJDUEOoq-jS1HO-LUXW4qo0gW9FNs"></script>
 
 
 <script src="js/jquery-3.1.1.min.js"></script>
-
 
 
 <script src="js/wow.min.js"></script>
@@ -217,12 +227,15 @@
 <script type="text/javascript" src="app/application/app.js"></script>
 <script type="text/javascript" src="app/application/properties.js"></script>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/css/bootstrap-datetimepicker.min.css"/>
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
 <script src="js/moment.min.js"></script>
 <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/js/bootstrap-datetimepicker.min.js"></script>
@@ -252,10 +265,10 @@
     $(function () {
         var DTP = $('#datetimepicker1').datetimepicker({
             daysOfWeekDisabled: [],
-            defaultDate:new Date()
+            defaultDate: new Date()
         });
 
-        DTP.on("dp.change", function(e) {
+        DTP.on("dp.change", function (e) {
             var antiga = new Date(e.oldDate._d);
             var atual = new Date(e.date._d);
 
@@ -265,13 +278,14 @@
                 $('#datetimepicker1').data("DateTimePicker").date(moment(atual).format('MM/DD/YYYY'));
                 e.stopPropagation();
                 return;
-            } /*else if (antiga.getHours() == 0 && atual.getHours() == 23) {
-                console.log("diminiu um dia", antiga.getDay() - atual.getDay());
-                atual.setDate(antiga.getDay() + 1);
-                $('#datetimepicker1').data("DateTimePicker").date(moment(atual).format('MM/DD/YYYY'));
-                e.stopPropagation();
-                return;
-            }*/
+            }
+            /*else if (antiga.getHours() == 0 && atual.getHours() == 23) {
+             console.log("diminiu um dia", antiga.getDay() - atual.getDay());
+             atual.setDate(antiga.getDay() + 1);
+             $('#datetimepicker1').data("DateTimePicker").date(moment(atual).format('MM/DD/YYYY'));
+             e.stopPropagation();
+             return;
+             }*/
         });
     });
 </script>
