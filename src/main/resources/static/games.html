@@ -153,9 +153,9 @@
             </a>
             <div class="game_descrition">
                 <h1 class="planet"
-                    style="font-family: Planet; text-transform: capitalize; color: white; text-align: center">Games
-                    Board</h1>
-                <div class="submit_button" style="text-align: center; ">
+                    style="font-family: Planet; text-transform: capitalize; font-size: -webkit-xxx-large; font-weight: bold; color: white; text-align: center">Game
+                    Boards</h1>
+                <div class="submit_button" style="text-align: center; padding-top: 2em;">
                     <div class="col-md-12">
                         <a id="ad">
                             <button type="button" class="btn btn-success-default" data-toggle="modal"
@@ -169,7 +169,7 @@
                     <div class="col-md-6 gamesList">
                         <div ng-repeat="d in gameList">
                             <div class="row cardHeader" style="margin-left: -1.1em; width: 111.5%;">
-                                <label style="font-size: 1.5em; padding-top: 0.2em; margin-left: 43.3%">{{ d }}</label>
+                                <label style="font-weight: bold; color: white; font-size: 1.5em; padding-top: 0.2em; margin-left: 43.3%">{{ d }}</label>
                             </div>
                             <div class="row eventCard" ng-repeat="game in matchs[d]" ng-click="findGame(game)">
                                 <div class="col-md-4 cardSquare">
@@ -185,7 +185,7 @@
                                     <h4><strong> Intensity:</strong> {{game.intensityLevel}}</h4>
                                 </div>
                                 <button type="button" class="glyphicon glyphicon-envelope btn pull-right"
-                                        style="margin-right: 1em; margin-bottom: 1em" data-toggle="modal"
+                                        style="margin-right: 0.3em; margin-bottom: 0.3em" data-toggle="modal"
                                         data-target="#chat"></button>
                             </div>
                         </div>
