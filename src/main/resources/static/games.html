@@ -123,15 +123,42 @@
                 </div>
                 <div class="modal-body">
                     <div ng-controller="chatController">
-                        <p>User : <input type="text" ng-model="newmessage.user"></p>
-                        <p>Messa :<input type="text" ng-model="newmessage.text"></p>
-                        <button ng-click="inserisci(newmessage)">Send</button>
-
-                        <ul>
-                            <li ng-repeat="message in messages">
-                                {{message.user}} dice :{{message.text}}
-                            </li>
-                        </ul>
+                        <!-- inicio -->
+                        <div class="container">
+                            <link rel="stylesheet" href="css/chat.css">
+                            <div class="row chat-window col-xs-5 col-md-3" id="chat_window_1"
+                                 style="margin-left:10px; width: 47%;">
+                                <div class="col-xs-12 col-md-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body msg_container_base">
+                                            <div ng-repeat="mensagem in getMensagens()" class="row msg_container base_receive">
+                                                <div class="col-md-2 col-xs-2 avatar">
+                                                    <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg"
+                                                         class=" img-responsive ">
+                                                </div>
+                                                <div class="col-md-10 col-xs-10">
+                                                    <div class="messages msg_receive">
+                                                        <p>{{ mensagem.texto}}</p>
+                                                        <time>{{ mensagem.autor}} • {{ getTime(mensagem) }} min</time>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <div class="input-group">
+                                                <input ng-model="texto" id="btn-input" type="text"
+                                                       class="form-control input-sm chat_input"
+                                                       placeholder="Write your message here..."/>
+                                                <span class="input-group-btn">
+                        <button ng-click="inserisci(texto)" class="btn btn-primary btn-sm" id="btn-chat">Send</button>
+                        </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- fim -->
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -153,7 +180,8 @@
             </a>
             <div class="game_descrition">
                 <h1 class="planet"
-                    style="font-family: Planet; text-transform: capitalize; font-size: -webkit-xxx-large; font-weight: bold; color: white; text-align: center">Game
+                    style="font-family: Planet; text-transform: capitalize; font-size: -webkit-xxx-large; font-weight: bold; color: white; text-align: center">
+                    Game
                     Boards</h1>
                 <div class="submit_button" style="text-align: center; padding-top: 2em;">
                     <div class="col-md-12">
@@ -169,7 +197,8 @@
                     <div class="col-md-6 gamesList">
                         <div ng-repeat="d in gameList">
                             <div class="row cardHeader" style="margin-left: -1.1em; width: 111.5%;">
-                                <label style="font-weight: bold; color: white; font-size: 1.5em; padding-top: 0.2em; margin-left: 43.3%">{{ d }}</label>
+                                <label style="font-weight: bold; color: white; font-size: 1.5em; padding-top: 0.2em; margin-left: 43.3%">{{
+                                    d }}</label>
                             </div>
                             <div class="row eventCard" ng-repeat="game in matchs[d]" ng-click="findGame(game)">
                                 <div class="col-md-4 cardSquare">
@@ -184,7 +213,8 @@
                                     <h4><strong> Gender:</strong> {{game.gender =="COED"?"Co-Ed":game.gender}}</h4>
                                     <h4><strong> Intensity:</strong> {{game.intensityLevel}}</h4>
                                 </div>
-                                <button type="button" class="glyphicon glyphicon-envelope btn pull-right"
+                                <button ng-click="letschat(game)" type="button"
+                                        class="glyphicon glyphicon-envelope btn pull-right"
                                         style="margin-right: 0.3em; margin-bottom: 0.3em" data-toggle="modal"
                                         data-target="#chat"></button>
                             </div>

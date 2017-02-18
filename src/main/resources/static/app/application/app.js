@@ -1,7 +1,20 @@
 // app.js
 var app = angular.module('playpalApp', ['firebase']);
 
-angular.module('playpalApp').controller('gamesController', function ($scope, $timeout, $http, $q) {
+app.service('ChatService', [function() {
+    var self = this;
+
+    this.getGame = function () {
+        console.log("GET GAME", self.game);
+        return self.game;
+    };
+
+    this.setGame = function (game) {
+        self.game = game;
+    };
+}]);
+
+angular.module('playpalApp').controller('gamesController', function ($scope, $timeout, $http, $q, ChatService) {
 
     //declaracao de variaveis
 
@@ -83,6 +96,11 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
         $scope.markers.push(marker);
 
     }
+
+    $scope.letschat = function (game) {
+        ChatService.setGame(angular.copy(game))
+        console.log("AQUI", ChatService.game);
+    };
 
     $scope.findGame = function (game) {
 
@@ -328,14 +346,37 @@ angular.module('playpalApp').factory('playpalSrvc', function($http, $q) {
     };
 });
 
-app.controller('chatController', ['$scope','Message', function($scope,Message){
+app.controller('chatController', ['$scope','Message', 'ChatService', function($scope, Message, ChatService){
 
     $scope.user="Guest";
 
     $scope.messages= Message.all;
 
+    $scope.getMensagens = function () {
+        var game = ChatService.getGame();
+        var msgs = [];
+
+        for (var i = 0; i < $scope.messages.length; i++) {
+            if ($scope.messages[i].hash === game.id) {
+                msgs.push($scope.messages[i]);
+            }
+        }
+
+        return msgs;
+    };
+
+    $scope.getGame = function () {
+        return ChatService.getGame();
+    };
+
     $scope.inserisci = function(message){
-        Message.create(message);
+        Message.create(message, "autor", ChatService.getGame().id);
+        $scope.texto = undefined;
+    };
+
+    $scope.getTime = function (mensagem) {
+        var diff = Math.abs(new Date() - new Date(mensagem.data));
+        return Math.floor((diff/1000)/60);
     };
 }]);
 
@@ -346,8 +387,13 @@ app.factory('Message', ['$firebaseArray', '$firebaseArray',
 
         var Message = {
             all: messages,
-            create: function (message) {
-                return messages.$add(message);
+            create: function (message, autor, hash) {
+                return messages.$add({
+                    texto: message,
+                    autor: "Fulano",
+                    data: new Date().toString(),
+                    hash: hash
+                });
             },
             get: function (messageId) {
                 return messages.child(messageId).$asObject();
