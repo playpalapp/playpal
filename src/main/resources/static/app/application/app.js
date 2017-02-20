@@ -5,7 +5,6 @@ app.service('ChatService', [function() {
     var self = this;
 
     this.getGame = function () {
-        console.log("GET GAME", self.game);
         return self.game;
     };
 
@@ -14,9 +13,95 @@ app.service('ChatService', [function() {
     };
 }]);
 
-angular.module('playpalApp').controller('gamesController', function ($scope, $timeout, $http, $q, ChatService) {
+angular.module('playpalApp').controller('gamesController', function ($scope, $timeout, $http, $q, ChatService, Message) {
 
     //declaracao de variaveis
+
+    $scope.isCreateUser = false;
+
+    $scope.setIsCreateUser = function() {
+      $scope.isCreateUser = !$scope.isCreateUser;
+    };
+
+    $scope.getLoginMessage = function () {
+        return $scope.isCreateUser ? "Create Account" : "Sign in";
+    };
+
+    $scope.user = {};
+
+    var jsonUser = JSON.parse(window.localStorage.getItem('play-user'));
+    if (jsonUser !== null) {
+        $scope.user = jsonUser;
+    }
+
+    $scope.messageWrongpassord = undefined;
+
+
+    $scope.saveUser = function () {
+        if ($scope.user.email && $scope.user.password) {
+            if ($scope.isCreateUser && $scope.hasUser($scope.user.email)) {
+                $scope.messageWrongpassord = "This email is already used";
+                return;
+            }
+            var usuario = $scope.getUser($scope.user.email);
+            if (!usuario && $scope.isCreateUser) {
+                $scope.user = {
+                    email: $scope.user.email,
+                    password: $scope.user.password,
+                    isUsuario: true
+                };
+                Message.all.$add($scope.user);
+                window.localStorage.setItem('play-user', JSON.stringify($scope.user));
+                $scope.messageWrongpassord = undefined;
+                return;
+            }
+
+            if (!usuario && !$scope.isCreateUser) {
+                $scope.messageWrongpassord = "There is no account with this email";
+                return;
+            }
+
+
+            if (usuario && $scope.user.password !== usuario.password) {
+                $scope.messageWrongpassord = "You user or password not exist or is incorrect";
+            } else {
+                $scope.user = usuario;
+                window.localStorage.setItem('play-user', JSON.stringify($scope.user));
+            }
+        }
+    };
+
+    $scope.hasUser = function (email) {
+        var usuarios = $scope.getUsers();
+
+        for (var i = 0; i < usuarios.length; i++) {
+            if (usuarios[i].email === email) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    $scope.getUser = function(email) {
+        var usuarios = $scope.getUsers();
+        for (var i = 0; i < usuarios.length; i++) {
+            if (usuarios[i].email === email) {
+                return usuarios[i];
+            }
+        }
+    };
+
+    $scope.getUsers = function () {
+        var usuarios = [];
+
+        for (var i = 0; i < Message.all.length; i++) {
+            if (Message.all[i].isUsuario) {
+                usuarios.push(Message.all[i]);
+            }
+        }
+
+        return usuarios;
+    };
 
     var mapOptions = {
         zoom: 15,
@@ -71,7 +156,6 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
 
 
     $scope.ampm = function (date) {
-        console.log(date);
         var hours = new Date(date).getHours();
         return hours >= 12 ? "PM" : "AM";
     }
@@ -95,11 +179,50 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
 
         $scope.markers.push(marker);
 
-    }
+    };
+
+    $scope.getUsuariosGame = function (game) {
+
+    };
+
+    $scope.joinTheGame = function () {
+      Message.all.$add({
+          'game': ChatService.getGame().id,
+          'user': $scope.user.email,
+          'isX': true
+      });
+    };
+
+    $scope.teco = false;
+
+    $scope.tecando = function () {
+      $scope.teco = !$scope.teco;
+    };
+
+    $scope.neverSee = function () {
+        return $scope.teco;
+    };
+
+    $scope.isInGame = function(game) {
+        var xs = [];
+
+        for (var i = 0; i < Message.all.length; i++) {
+            if (Message.all[i].isX) {
+                var x = Message.all[i];
+                xs.push(x);
+                if (game.id === x.game && $scope.user.email === x.user) {
+                    return true;
+                }
+            }
+        }
+    } ;
+
+    $scope.kiModal = function (game) {
+        return $scope.isInGame(game) ? "#chat" : "#confirmacao";
+    };
 
     $scope.letschat = function (game) {
         ChatService.setGame(angular.copy(game))
-        console.log("AQUI", ChatService.game);
     };
 
     $scope.findGame = function (game) {
@@ -151,11 +274,9 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
         }).
         success(function(response) {
             if(Object.keys(response).length  > 0){
-                console.log("matchs", $scope.matchs);
                 $scope.matchs = response;
                 burn($scope.matchs);
                 $scope.gameList = Object.keys(response);
-                console.log("game list", $scope.gameList);
                 $scope.gameList.sort($scope.order);
                 $('#myModal').modal('toggle');
 
@@ -179,7 +300,6 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
             }
         }).
         error(function(status) {
-            console.log("error");
         });
 
 
@@ -203,7 +323,6 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
                     map     : map,
                     position: results[0].geometry.location
                 } );
-                console.log(game);
                 var date = new Date(game.date);
                 date = date.toString().split(" ");
                 info = {
@@ -233,16 +352,12 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
                 // the estimated date timestamp
                 case 200:
                     $scope.matchs = response.data;
-                    console.log("DATA", response.data);
                     for (var i = 0; i < $scope.matchs.length; i++) {
                         $scope.matchs[i].date = new Date($scope.matchs[i].date);
                     }
                     burn($scope.matchs);
                     $scope.gameList = Object.keys(response.data);
-                    console.log("ANTES", $scope.gameList, response.data);
                     $scope.gameList.sort($scope.order);
-
-                    console.log("depois", $scope.gameList, response.data);
 
                     codeAddress($scope.matchs[$scope.gameList[0]][0])
                 // the response object
@@ -253,12 +368,9 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
         });
 
     function burn(lista) {
-        console.log("BURN", lista);
         for (var i = 0; i < Object.keys(lista).length; i++) {
             var el = lista[Object.keys(lista)[i]];
-            console.log("ELEMENT", el);
             el.sort(function(a, b) {
-                console.log("A", new Date(a.date), "B", new Date(b.date));
                 return a.date - b.date;
             });
         }
@@ -357,7 +469,7 @@ app.controller('chatController', ['$scope','Message', 'ChatService', function($s
         var msgs = [];
 
         for (var i = 0; i < $scope.messages.length; i++) {
-            if ($scope.messages[i].hash === game.id) {
+            if (!$scope.messages[i].isUsuario && $scope.messages[i].hash === game.id) {
                 msgs.push($scope.messages[i]);
             }
         }
@@ -392,7 +504,8 @@ app.factory('Message', ['$firebaseArray', '$firebaseArray',
                     texto: message,
                     autor: "Fulano",
                     data: new Date().toString(),
-                    hash: hash
+                    hash: hash,
+                    isUsuario: false
                 });
             },
             get: function (messageId) {

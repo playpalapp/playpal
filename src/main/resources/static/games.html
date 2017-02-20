@@ -39,6 +39,8 @@
 </head>
 <body class="promo" ng-app="playpalApp">
 <div ng-controller="gamesController">
+    <!-- BEGIN -->
+    <!-- #modal-app cria jogo -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -111,6 +113,7 @@
         </div>
     </div>
 
+    <!-- #modal-app chat -->
     <div class="modal fade" id="chat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -131,7 +134,8 @@
                                 <div class="col-xs-12 col-md-12">
                                     <div class="panel panel-default">
                                         <div class="panel-body msg_container_base">
-                                            <div ng-repeat="mensagem in getMensagens()" class="row msg_container base_receive">
+                                            <div ng-repeat="mensagem in getMensagens()"
+                                                 class="row msg_container base_receive">
                                                 <div class="col-md-2 col-xs-2 avatar">
                                                     <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg"
                                                          class=" img-responsive ">
@@ -169,8 +173,70 @@
             </div>
         </div>
     </div>
-    <!-- after chat -->
 
+    <!-- #modal-app confirmação -->
+    <div class="modal fade" id="confirmacao" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document" data>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" ng-click="closeCreateGame()" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Join the game</h4>
+                </div>
+
+                <div class="modal-body" ng-if="user.isUsuario">
+                    <p>Do you want to join this game?</p>
+                </div>
+
+                <div class="modal-body" ng-if="!user.isUsuario">
+                    <div class="col-md-12" style="margin-top: -3%">
+                        <div class="login-panel panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">{{ getLoginMessage() }}</h3>
+                            </div>
+                            <div class="panel-body">
+                                <form role="form">
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <input ng-model="user.email" class="form-control" placeholder="E-mail"
+                                                   name="email" type="email"
+                                                   autofocus="">
+                                        </div>
+                                        <div class="form-group">
+                                            <input ng-model="user.password " class="form-control" placeholder="Password"
+                                                   name="password"
+                                                   type="password" value="">
+                                        </div>
+                                        <p ng-if="messageWrongpassord">{{ messageWrongpassord }}</p>
+                                        <!-- Change this to a button or input when using this as a form -->
+                                        <a href="javascript:;" ng-click="saveUser()" class="btn btn-sm btn-success">{{
+                                            isCreateUser ? "Sign up" : "Sign in" }}</a>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" ng-if="!user.isUsuario">
+                    <button type="button" class="btn btn-secondary"
+                            ng-click="setIsCreateUser()">
+                        {{ isCreateUser ? "Back" : "Create user"}}
+                    </button>
+                </div>
+                <div class="modal-footer" ng-if="user.isUsuario">
+                    <button type="button" ng-click="close('No')" class="btn btn-default" data-dismiss="modal">No
+                    </button>
+                    <button  ng-click="joinTheGame()" type="button" class="btn btn-primary" data-dismiss="modal"   data-toggle="modal"
+                            data-target="#chat">Yes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FINISH -->
     <div id="container">
         <div class="top_promo_block" id="promo_head">
             <a href="index.html">
@@ -213,10 +279,11 @@
                                     <h4><strong> Gender:</strong> {{game.gender =="COED"?"Co-Ed":game.gender}}</h4>
                                     <h4><strong> Intensity:</strong> {{game.intensityLevel}}</h4>
                                 </div>
-                                <button ng-click="letschat(game)" type="button"
+                                <button ng-if="neverSee() || tecando()" type="button"
+                                        ng-click="letschat(game)"
                                         class="glyphicon glyphicon-envelope btn pull-right"
                                         style="margin-right: 0.3em; margin-bottom: 0.3em" data-toggle="modal"
-                                        data-target="#chat"></button>
+                                        data-target="{{ kiModal(game) }}"></button>
                             </div>
                         </div>
                     </div>
