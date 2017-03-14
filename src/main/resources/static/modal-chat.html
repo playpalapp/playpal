@@ -1,15 +1,14 @@
-<div class="modal">
-    <div class="modal-header">
-        <h4 class="modal-title">Chat</h4>
-    </div>
-    <div class="modal-body" style="max-height: 800px;">
-        <div ng-controller="chatController">
-            <!-- inicio -->
-            <div class="container">
+<div class="modal-header" ng-controller="chatController">
+    <h4 class="modal-title" style="color: white">{{ getTitle() }}</h4>
+</div>
+<div class="modal-body" style="max-height: 800px;">
+    <div ng-controller="chatController">
+        <!-- inicio -->
+        <div class="container">
+            <div class="row">
                 <link rel="stylesheet" href="css/chat.css">
-                <div class="row chat-window col-md-3" id="chat_window_1"
-                     style="margin-left:10px; width: 47%;">
-                    <div class="col-xs-12 col-md-12">
+                <div class="col-md-5" id="chat_window_1">
+                    <div>
                         <div class="panel panel-default">
                             <div class="panel-body msg_container_base">
                                 <div ng-repeat="mensagem in getMensagens()"
@@ -18,7 +17,7 @@
                                         <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg"
                                              class=" img-responsive ">
                                     </div>
-                                    <div class="col-md-10 col-xs-10">
+                                    <div class="">
                                         <div class="messages msg_receive">
                                             <p>{{ mensagem.texto}}</p>
                                             <time>{{ mensagem.autor}} • {{ getTime(mensagem) }} min</time>
@@ -39,14 +38,62 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-9">parte 2</div>
+                <div class="col-md-7" style="color: red">
+                    <div style="background: #e5e5e5; height: 354px">
+
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active">
+                                <a href="#home" role="tab" data-toggle="tab">
+                                    Game Details
+                                </a>
+                            </li>
+                            <li><a href="#profile" role="tab" data-toggle="tab">
+                                Players
+                            </a>
+                            </li>
+                            <li ng-click="mostraMapa()" ><a href="#mapa-game" role="tab" data-toggle="tab">
+                                Game Map
+                            </a>
+                            </li>
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div style="color: black" class="tab-pane fade active in" id="home">
+                                <div style="margin-left: 14px; margin-top: 6px;">
+                                    <p>Date: {{ getDetailsDate() }}</p>
+                                    <p>Time: {{ getDetailsTime() }}</p>
+                                    <p>Address: {{ getGame().street }}, {{ getGame().city }}</p>
+                                    <p>Gender: {{ getGame().gender }}</p>
+                                    <p>Intensity: {{ getGame().intensityLevel }}</p>
+                                    <p># of Spots: {{ numberPlay() }}</p>
+                                    <p>Shirt colors: Red and White</p>
+                                    <p>Misc Detail: {{ getGame().name }}</p>
+                                </div>
+                            </div>
+                            <div style="color: black" class="tab-pane fade" id="profile">
+                                <div style="margin-left: 14px; margin-top: 6px;">
+                                    <p ng-repeat="player in getPlayers() track by $index">
+                                        {{ $index + 1}}. {{ player }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div  class="tab-pane fade" id="mapa-game">
+                                <div ng-if="showMap">
+                                    <map center="[{{ lat}}, {{ lng}}]" zoom-control="true" zoom="8"> </map>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- fim -->
             </div>
-            <!-- fim -->
         </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" ng-click="closeCreateGame()" data-dismiss="modal">
-            Close
-        </button>
-    </div>
-</div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" ng-click="fechaModal()" data-dismiss="modal">
+                Close
+            </button>
+        </div>

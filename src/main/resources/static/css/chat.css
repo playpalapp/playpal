@@ -122,3 +122,11 @@
     left: 0px;
     bottom: 0;
 }
+
+    .app-modal-chat .modal-content {
+        width: 85em;
+        right: 10em;
+        height: 39em;
+        background: url(../img/start/bg.jpg);
+        background-position: center bottom;
+    }

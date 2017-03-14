@@ -1,5 +1,5 @@
 // app.js
-var app = angular.module('playpalApp', ['firebase', 'ui.bootstrap']);
+var app = angular.module('playpalApp', ['firebase', 'ui.bootstrap', 'ngMap']);
 
 app.service('ChatService', [function() {
     var self = this;
@@ -10,6 +10,11 @@ app.service('ChatService', [function() {
 
     this.setGame = function (game) {
         self.game = game;
+    };
+
+    this.ampm = function (date) {
+        var hours = new Date(date).getHours();
+        return hours >= 12 ? "PM" : "AM";
     };
 }]);
 
@@ -156,9 +161,8 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
 
 
     $scope.ampm = function (date) {
-        var hours = new Date(date).getHours();
-        return hours >= 12 ? "PM" : "AM";
-    }
+       return ChatService.ampm(date);
+    };
     //Declarações de funçōes
 
     //Cria um novo ponto no mapa
@@ -382,16 +386,25 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
         google.maps.event.trigger(selectedMarker, 'click');
     };
 
+    $scope.fechaModal = function () {
+      $scope.modalVar.close();
+    };
+
+    $scope.modalVar = undefined;
+
     $scope.clicou = function (game) {
-        ChatService.setGame(angular.copy(game));
+        if (game !== undefined) {
+            ChatService.setGame(angular.copy(game));
+        }
         if ($scope.user && $scope.user.isUsuario) {
-            $uibModal.open({
+            $scope.modalVar = $uibModal.open({
                 templateUrl: 'modal-chat.html',
                 scope: $scope,
-                size: 'lg'
+                size: 'lg',
+                windowClass: 'app-modal-chat'
             });
         } else {
-            $uibModal.open({
+            $scope.modalVar = $uibModal.open({
                 templateUrl: 'modal-login.html',
                 scope: $scope,
                 size: 50,
@@ -495,8 +508,95 @@ app.controller('chatController', ['$scope','Message', 'ChatService', function($s
         return msgs;
     };
 
+    $scope.showMap = false;
+
+    $scope.mostraMapa = function () {
+        setTimeout(function () {
+            $scope.showMap = true;
+            $scope.$apply();
+        }, 500);
+    };
+
     $scope.getGame = function () {
+        console.log("GAME", ChatService.getGame());
+
+
         return ChatService.getGame();
+    };
+
+    var weekday = new Array(7);
+    weekday[0] =  "Sunday";
+    weekday[1] = "Monday";
+    weekday[2] = "Tuesday";
+    weekday[3] = "Wednesday";
+    weekday[4] = "Thursday";
+    weekday[5] = "Friday";
+    weekday[6] = "Saturday";
+
+    var monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    $scope.getDetailsDate = function() {
+        var data = ChatService.getGame().date;
+        data = new Date(data);
+        return "" + weekday[data.getDay()] + ", " + monthNames[data.getMonth()] + " " + data.getDate() + "th";
+    };
+
+    $scope.getDetailsTime = function () {
+        var data = ChatService.getGame().date;
+        data = new Date(data);
+        return "" + data.toTimeString().split(' ')[0].slice(0, 5) + ChatService.ampm(ChatService.getGame().date);
+    };
+    //
+    // Message.all.$add({
+    //     'game': ChatService.getGame().id,
+    //     'user': $scope.user.email,
+    //     'isX': true
+    // });
+
+    $scope.contem = function(lista, item) {
+        for (var i = 0; i < lista.length; i++) {
+            if (lista[i] === item) {
+                return true;
+            }
+        }
+
+        return false;
+    };
+
+    $scope.lat = 25;
+    $scope.lng = 80;
+
+    $scope.getPlayers = function () {
+        var game = ChatService.getGame();
+        var jogadores = [];
+
+        for (var i = 0; i < $scope.messages.length; i++) {
+            var email =$scope.messages[i].user;
+            if ($scope.messages[i].isX && $scope.messages[i].game === game.id && !$scope.contem(jogadores, email)) {
+                jogadores.push(email);
+            }
+        }
+
+        return jogadores;
+    };
+
+
+
+    $scope.numberPlay = function () {
+        return $scope.getPlayers().length;
+    };
+
+    $scope.getTitle = function() {
+        var data = ChatService.getGame().date;
+        data = new Date(data);
+        var title = "";
+        title += weekday[data.getDay()] + ", " + monthNames[data.getMonth()];
+        title += " " + data.getDate() + "th - " + data.toTimeString().split(' ')[0].slice(0, 5) + ChatService.ampm(ChatService.getGame().date);
+        title += " - " + ChatService.getGame().street;
+
+        return title;
     };
 
     $scope.inserisci = function(message){
