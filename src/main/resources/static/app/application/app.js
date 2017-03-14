@@ -1,5 +1,5 @@
 // app.js
-var app = angular.module('playpalApp', ['firebase']);
+var app = angular.module('playpalApp', ['firebase', 'ui.bootstrap']);
 
 app.service('ChatService', [function() {
     var self = this;
@@ -13,7 +13,7 @@ app.service('ChatService', [function() {
     };
 }]);
 
-angular.module('playpalApp').controller('gamesController', function ($scope, $timeout, $http, $q, ChatService, Message) {
+angular.module('playpalApp').controller('gamesController', function ($scope, $timeout, $http, $q, ChatService, Message, $uibModal) {
 
     //declaracao de variaveis
 
@@ -380,8 +380,25 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
     $scope.openInfoWindow = function(e, selectedMarker){
         e.preventDefault();
         google.maps.event.trigger(selectedMarker, 'click');
-    }
+    };
 
+    $scope.clicou = function (game) {
+        ChatService.setGame(angular.copy(game));
+        if ($scope.user && $scope.user.isUsuario) {
+            $uibModal.open({
+                templateUrl: 'modal-chat.html',
+                scope: $scope,
+                size: 'lg'
+            });
+        } else {
+            $uibModal.open({
+                templateUrl: 'modal-login.html',
+                scope: $scope,
+                size: 50,
+                ariaLabelledBy: ''
+            });
+        }
+    };
 });
 
 angular.module('playpalApp').factory('playpalSrvc', function($http, $q) {
@@ -466,6 +483,7 @@ app.controller('chatController', ['$scope','Message', 'ChatService', function($s
 
     $scope.getMensagens = function () {
         var game = ChatService.getGame();
+        console.log("game", game);
         var msgs = [];
 
         for (var i = 0; i < $scope.messages.length; i++) {

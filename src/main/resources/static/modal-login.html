@@ -1,0 +1,50 @@
+<div class="modal-header">
+    <h4 class="modal-title">Join the game</h4>
+</div>
+
+<div class="modal-body" ng-if="user.isUsuario">
+    <p>Do you want to join this game?</p>
+</div>
+
+<div class="modal-body" ng-if="!user.isUsuario">
+    <div class="col-md-12" style="margin-top: -3%">
+        <div class="login-panel panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{ getLoginMessage() }}</h3>
+            </div>
+            <div class="panel-body">
+                <form role="form">
+                    <fieldset>
+                        <div class="form-group">
+                            <input ng-model="user.email" class="form-control" placeholder="E-mail"
+                                   name="email" type="email"
+                                   autofocus="">
+                        </div>
+                        <div class="form-group">
+                            <input ng-model="user.password " class="form-control" placeholder="Password"
+                                   name="password"
+                                   type="password" value="">
+                        </div>
+                        <p ng-if="messageWrongpassord">{{ messageWrongpassord }}</p>
+                        <!-- Change this to a button or input when using this as a form -->
+                        <a href="javascript:;" ng-click="saveUser()" class="btn btn-sm btn-success">{{
+                            isCreateUser ? "Sign up" : "Sign in" }}</a>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer" ng-if="!user.isUsuario">
+    <button type="button" class="btn btn-secondary"
+            ng-click="setIsCreateUser()">
+        {{ isCreateUser ? "Back" : "Create user"}}
+    </button>
+</div>
+<div class="modal-footer" ng-if="user.isUsuario">
+    <button type="button" ng-click="close('No')" class="btn btn-default" data-dismiss="modal">No
+    </button>
+    <button  ng-click="joinTheGame(); chat();" type="button" class="btn btn-primary" data-dismiss="modal"   data-toggle="modal"
+             >Yes
+    </button>
+</div>
