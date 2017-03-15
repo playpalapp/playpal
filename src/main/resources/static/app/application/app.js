@@ -575,8 +575,8 @@ app.controller('chatController', ['$scope','Message', 'ChatService', function($s
         return false;
     };
 
-    $scope.lat = 25;
-    $scope.lng = 80;
+    $scope.lat = 40.7219354;
+    $scope.lng = -73.8904167;
 
     $scope.getPlayers = function () {
         var game = ChatService.getGame();
