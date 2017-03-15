@@ -12,6 +12,14 @@ app.service('ChatService', [function() {
         self.game = game;
     };
 
+    this.getUser = function () {
+        return self.user;
+    };
+
+    this.setUser = function (user) {
+        self.user = user;
+    };
+
     this.ampm = function (date) {
         var hours = new Date(date).getHours();
         return hours >= 12 ? "PM" : "AM";
@@ -35,8 +43,13 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
     $scope.user = {};
 
     var jsonUser = JSON.parse(window.localStorage.getItem('play-user'));
+    console.log("jsonuser", jsonUser);
     if (jsonUser !== null) {
+        console.log("ENTROU!!");
         $scope.user = jsonUser;
+        ChatService.setUser($scope.user);
+    } else {
+        console.log("NÂO ENTROU");
     }
 
     $scope.messageWrongpassord = undefined;
@@ -49,6 +62,7 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
                 return;
             }
             var usuario = $scope.getUser($scope.user.email);
+            $scope.user = usuario;
             if (!usuario && $scope.isCreateUser) {
                 $scope.user = {
                     email: $scope.user.email,
@@ -496,7 +510,6 @@ app.controller('chatController', ['$scope','Message', 'ChatService', function($s
 
     $scope.getMensagens = function () {
         var game = ChatService.getGame();
-        console.log("game", game);
         var msgs = [];
 
         for (var i = 0; i < $scope.messages.length; i++) {
@@ -518,9 +531,6 @@ app.controller('chatController', ['$scope','Message', 'ChatService', function($s
     };
 
     $scope.getGame = function () {
-        console.log("GAME", ChatService.getGame());
-
-
         return ChatService.getGame();
     };
 
@@ -600,7 +610,7 @@ app.controller('chatController', ['$scope','Message', 'ChatService', function($s
     };
 
     $scope.inserisci = function(message){
-        Message.create(message, "autor", ChatService.getGame().id);
+        Message.create(message, ChatService.getUser(), ChatService.getGame().id);
         $scope.texto = undefined;
     };
 
@@ -620,7 +630,7 @@ app.factory('Message', ['$firebaseArray', '$firebaseArray',
             create: function (message, autor, hash) {
                 return messages.$add({
                     texto: message,
-                    autor: "Fulano",
+                    autor: autor.email,
                     data: new Date().toString(),
                     hash: hash,
                     isUsuario: false
