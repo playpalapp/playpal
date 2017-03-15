@@ -600,6 +600,7 @@ app.controller('chatController', ['$scope','Message', 'ChatService', function($s
 
     $scope.getTitle = function() {
         var data = ChatService.getGame().date;
+        console.log(ChatService.getGame());
         data = new Date(data);
         var title = "";
         title += weekday[data.getDay()] + ", " + monthNames[data.getMonth()];

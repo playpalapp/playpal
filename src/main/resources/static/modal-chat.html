@@ -67,7 +67,7 @@
                                     <p>Address: {{ getGame().street }}, {{ getGame().city }}</p>
                                     <p>Gender: {{ getGame().gender }}</p>
                                     <p>Intensity: {{ getGame().intensityLevel }}</p>
-                                    <p># of Spots: {{ numberPlay() }}</p>
+                                    <p># of Spots: {{ getGame().numberOfPlayers - 1 }}</p>
                                     <p>Shirt colors: Red and White</p>
                                     <p>Misc Detail: {{ getGame().name }}</p>
                                 </div>
