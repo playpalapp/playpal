@@ -26,6 +26,7 @@ public class Match implements Serializable {
 
 
     private Integer numberOfPlayers;
+    private String shirtColor;
 
     public String getName() {
         return name;
@@ -119,5 +120,13 @@ public class Match implements Serializable {
 
     public void setNumberOfPlayers(Integer numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
+    }
+
+    public String getShirtColor() {
+        return shirtColor;
+    }
+
+    public void setShirtColor(String shirtColor) {
+        this.shirtColor = shirtColor;
     }
 }

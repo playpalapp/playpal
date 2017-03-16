@@ -33,6 +33,7 @@ public class PlaypayApplication {
 			match.setStreet("60-30 70th Street");
 			match.setZipcode("11378");
 			match.setName("Pelada dos amigos!");
+			match.setShirtColor("Red and White");
 			match.setNumberOfPlayers(10);
 
 			matchRepository.save(match);
