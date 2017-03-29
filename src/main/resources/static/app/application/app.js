@@ -445,8 +445,9 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
             console.log("match", match);
             for (var j = 0; j < match.length; j++) {
                 var game = match[j];
-                // console.log("game", game);
-                return game;
+                if (game.id === id) {
+                    return game;
+                }
             }
         }
     }
