@@ -27,8 +27,8 @@ app.service('ChatService', [function() {
 }]);
 
 angular.module('playpalApp').controller('gamesController', function ($scope, $timeout, $http, $q, ChatService, Message, $uibModal) {
-
     //declaracao de variaveis
+
 
     $scope.isCreateUser = false;
 
@@ -43,13 +43,10 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
     $scope.user = {};
 
     var jsonUser = JSON.parse(window.localStorage.getItem('play-user'));
-    console.log("jsonuser", jsonUser);
     if (jsonUser !== null) {
-        console.log("ENTROU!!");
         $scope.user = jsonUser;
         ChatService.setUser($scope.user);
     } else {
-        console.log("NÂO ENTROU");
     }
 
     $scope.messageWrongpassord = undefined;
@@ -408,7 +405,16 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
 
     $scope.modalVar = undefined;
 
-    $scope.clicou = function (game) {
+    $scope.clicou = function (game, flag) {
+        if (flag) {
+            console.log(flag);
+            console.log(window.location.href, game.id);
+            console.log(window.location);
+            window.location.replace(window.location.origin = window.location.pathname + "?id=" + game.id);
+        } else {
+            console.log("vai dar certo");
+        }
+
         if (game !== undefined) {
             ChatService.setGame(angular.copy(game));
         }
@@ -428,6 +434,33 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
             });
         }
     };
+
+    function getgamebyid(id) {
+        console.log($scope.matchs);
+
+        var chaves = Object.keys($scope.matchs);
+
+        for (var i = 0; i < chaves.length; i++) {
+            var match = $scope.matchs[chaves[i]];
+            console.log("match", match);
+            for (var j = 0; j < match.length; j++) {
+                var game = match[j];
+                // console.log("game", game);
+                return game;
+            }
+        }
+    }
+
+    setTimeout(function() {
+        var id = window.location.search;
+
+        if (id !== "") {
+            id = id.split("=")[1];
+            var game = getgamebyid(id);
+            // console.log("GAME", game);
+            $scope.clicou(game);
+        }
+    }, 1000);
 });
 
 angular.module('playpalApp').factory('playpalSrvc', function($http, $q) {
@@ -477,7 +510,6 @@ angular.module('playpalApp').factory('playpalSrvc', function($http, $q) {
     }
 
 
-
     function getGames() {
         return $http({
             method: 'GET',
@@ -502,6 +534,7 @@ angular.module('playpalApp').factory('playpalSrvc', function($http, $q) {
         getGames:               getGames
 
     };
+
 });
 
 app.controller('chatController', ['$scope','Message', 'ChatService', function($scope, Message, ChatService){
@@ -602,7 +635,6 @@ app.controller('chatController', ['$scope','Message', 'ChatService', function($s
 
     $scope.getTitle = function() {
         var data = ChatService.getGame().date;
-        console.log(ChatService.getGame());
         data = new Date(data);
         var title = "";
         title += weekday[data.getDay()] + ", " + monthNames[data.getMonth()];
