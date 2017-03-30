@@ -150,6 +150,30 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
 
     $scope.matchs ={};
 
+    $scope.marked = false;
+
+    function play() {
+        if (!$scope.marked) {
+            var count = 0;
+            $scope.marked = true;
+
+            var chaves = Object.keys($scope.matchs);
+
+
+
+            for (var i = 0; i < chaves.length; i++) {
+                var match = $scope.matchs[chaves[i]];
+                console.log(match);
+                for (var j = 0; j < match.length; j++) {
+                    var game = match[j];
+                    $scope.findGame(game);
+                    count++;
+                }
+            }
+            console.log("CONTAGEM", count);
+        }
+    }
+
     $scope.getHours = function(date) {
         var d = new Date(date);
 
@@ -240,9 +264,9 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
         ChatService.setGame(angular.copy(game))
     };
 
-    $scope.findGame = function (game) {
+    $scope.findGame = function (game, flag) {
 
-        codeAddress(game);
+        codeAddress(game, flag);
     }
 
     //cria um novo jogo
@@ -297,7 +321,6 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
                 $scope.gameList.sort($scope.order);
                 $('#myModal').modal('toggle');
 
-
                 codeAddress($scope.newgame);
 
                 $scope.newgame = {};
@@ -348,10 +371,12 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
                     lat :
                         results[0].geometry.location.lat(),
                     long : results[0].geometry.location.lng()
-                }
+                };
+                game.lat = info.lat;
+                game.long = info.long;
                 createMarker(info);
             } else {
-                alert( 'Geocode was not successful for the following reason: ' + status );
+                // alert( 'Geocode was not successful for the following reason: ' + status );
             }
         } );
     }
@@ -376,7 +401,8 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
                     $scope.gameList = Object.keys(response.data);
                     $scope.gameList.sort($scope.order);
 
-                    codeAddress($scope.matchs[$scope.gameList[0]][0])
+                    // codeAddress($scope.matchs[$scope.gameList[0]][0])
+                    play();
                 // the response object
                 default:
                     return response;
@@ -445,6 +471,8 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
             console.log("match", match);
             for (var j = 0; j < match.length; j++) {
                 var game = match[j];
+                console.log(">>>>>>>>>");
+                console.log(Number(game.id), Number(id), Number(game.id) === Number(id));
                 if (Number(game.id) === Number(id)) {
                     console.log("VAI RETORNAR");
                     return game;

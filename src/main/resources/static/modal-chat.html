@@ -81,7 +81,9 @@
                             </div>
                             <div  class="tab-pane fade" id="mapa-game">
                                 <div ng-if="showMap">
-                                    <map center="[{{ lat}}, {{ lng}}]" zoom-control="true" zoom="16"> </map>
+                                    <ng-map center="[{{ getGame().lat }}, {{ getGame().long }}]" zoom-control="true" zoom="16">
+                                        <marker position="[{{getGame().lat}}, {{getGame().long}}]" title="{{ getGame().name }}"></marker>
+                                    </ng-map>
                                 </div>
                             </div>
                         </div>
