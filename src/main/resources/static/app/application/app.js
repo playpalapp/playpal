@@ -624,7 +624,8 @@ app.controller('chatController', ['$scope','Message', 'ChatService', function($s
     $scope.getDetailsTime = function () {
         var data = ChatService.getGame().date;
         data = new Date(data);
-        return "" + data.toTimeString().split(' ')[0].slice(0, 5) + ChatService.ampm(ChatService.getGame().date);
+        // return "" + data.toTimeString().split(' ')[0].slice(0, 5) + ChatService.ampm(ChatService.getGame().date);
+        return "" + data.getHours() + ":" + (data.getMinutes() >= 10 ? data.getMinutes() : "0" + data.getMinutes());
     };
     //
     // Message.all.$add({
