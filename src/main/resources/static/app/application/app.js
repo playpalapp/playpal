@@ -308,6 +308,7 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
             zipcode:$scope.newgame.zipcode,
             numberOfPlayers: $scope.newgame.numberOfPlayers,
             date:(new Date($scope.newgame.date)),
+            otherDetails: $scope.newgame.otherDetails,
             players:[]}
 
         $http({

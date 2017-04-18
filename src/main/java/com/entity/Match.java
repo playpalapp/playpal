@@ -28,6 +28,8 @@ public class Match implements Serializable {
 
     private String shirtColorTwo;
 
+    private String otherDetails;
+
     public String getName() {
         return name;
     }
@@ -136,5 +138,13 @@ public class Match implements Serializable {
 
     public void setShirtColorTwo(String shirtColorTwo) {
         this.shirtColorTwo = shirtColorTwo;
+    }
+
+    public String getOtherDetails() {
+        return otherDetails;
+    }
+
+    public void setOtherDetails(String otherDetails) {
+        this.otherDetails = otherDetails;
     }
 }
