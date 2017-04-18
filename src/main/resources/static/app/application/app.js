@@ -279,7 +279,8 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
             ||$scope.newgame.street == null
             ||$scope.newgame.city == null
             ||$scope.newgame.state == null
-            ||$scope.newgame.shirtColor == null
+            ||$scope.newgame.shirtColorOne == null
+            ||$scope.newgame.shirtColorTwo == null
             ||$scope.newgame.zipcode == null
             ||$scope.newgame.date == null
             ||$scope.newgame.numberOfPlayers ==null){
@@ -302,7 +303,8 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
             street:$scope.newgame.street,
             city:$scope.newgame.city,
             state:$scope.newgame.state,
-            shirtColor: $scope.newgame.shirtColor,
+            shirtColorOne: $scope.newgame.shirtColorOne,
+            shirtColorTwo: $scope.newgame.shirtColorTwo,
             zipcode:$scope.newgame.zipcode,
             numberOfPlayers: $scope.newgame.numberOfPlayers,
             date:(new Date($scope.newgame.date)),

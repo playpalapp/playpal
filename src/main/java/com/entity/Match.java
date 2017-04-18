@@ -1,7 +1,5 @@
 package com.entity;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -26,7 +24,9 @@ public class Match implements Serializable {
 
 
     private Integer numberOfPlayers;
-    private String shirtColor;
+    private String shirtColorOne;
+
+    private String shirtColorTwo;
 
     public String getName() {
         return name;
@@ -122,11 +122,19 @@ public class Match implements Serializable {
         this.numberOfPlayers = numberOfPlayers;
     }
 
-    public String getShirtColor() {
-        return shirtColor;
+    public String getShirtColorOne() {
+        return shirtColorOne;
     }
 
-    public void setShirtColor(String shirtColor) {
-        this.shirtColor = shirtColor;
+    public void setShirtColorOne(String shirtColorOne) {
+        this.shirtColorOne = shirtColorOne;
+    }
+
+    public String getShirtColorTwo() {
+        return shirtColorTwo;
+    }
+
+    public void setShirtColorTwo(String shirtColorTwo) {
+        this.shirtColorTwo = shirtColorTwo;
     }
 }
