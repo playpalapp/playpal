@@ -1,4 +1,7 @@
 <div class="modal-header" ng-controller="chatController">
+    <button type="button" class="close" aria-label="Close" ng-click="fechaModal()" data-dismiss="modal">
+        <span aria-hidden="true">&times;</span>
+    </button>
     <h4 class="modal-title" style="color: white">{{ getTitle() }}</h4>
 </div>
 <div class="modal-body" style="max-height: 800px;">
@@ -96,7 +99,11 @@
         </div>
 
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" ng-click="fechaModal()" data-dismiss="modal">
-                Close
-            </button>
+            <h5 style="text-align: center; color: white">Invite your friends to play</h5>
+            <div class="social_buttons" style="left: 0%; top: 0%; bottom: 20%">
+                <i class="fa fa-share-alt-square social_bt" aria-hidden="true"></i>
+                <i class="fa fa-twitter-square social_bt" aria-hidden="true"></i>
+                <i class="fa fa-facebook-square social_bt" aria-hidden="true"></i>
+                <i class="fa fa-envelope-square social_bt" aria-hidden="true"></i>
+            </div>
         </div>
