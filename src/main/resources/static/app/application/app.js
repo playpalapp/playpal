@@ -26,7 +26,7 @@ app.service('ChatService', [function() {
     };
 }]);
 
-angular.module('playpalApp').controller('gamesController', function ($scope, $timeout, $http, $q, ChatService, Message, $uibModal) {
+angular.module('playpalApp').controller('gamesController', function ($scope, $timeout, $http, $q, ChatService, DataService, $uibModal) {
     //declaracao de variaveis
 
 
@@ -53,20 +53,24 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
 
 
     $scope.saveUser = function () {
+        if (!$scope.user.name 
+            || !$scope.user.lastname 
+            || !$scope.user.email 
+            || !$scope.user.password) {
+                $scope.messageWrongpassord = "Required fields not filled";
+                return;
+        }
+
         if ($scope.user.email && $scope.user.password) {
             if ($scope.isCreateUser && $scope.hasUser($scope.user.email)) {
                 $scope.messageWrongpassord = "This email is already used";
                 return;
             }
             var usuario = $scope.getUser($scope.user.email);
-            $scope.user = usuario;
+
             if (!usuario && $scope.isCreateUser) {
-                $scope.user = {
-                    email: $scope.user.email,
-                    password: $scope.user.password,
-                    isUsuario: true
-                };
-                Message.all.$add($scope.user);
+                $scope.user.isUsuario = true;
+                DataService.usuarios.create($scope.user);
                 window.localStorage.setItem('play-user', JSON.stringify($scope.user));
                 $scope.messageWrongpassord = undefined;
                 return;
@@ -90,6 +94,10 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
     $scope.hasUser = function (email) {
         var usuarios = $scope.getUsers();
 
+        if (!usuarios) {
+            return false;
+        }
+
         for (var i = 0; i < usuarios.length; i++) {
             if (usuarios[i].email === email) {
                 return true;
@@ -100,6 +108,10 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
 
     $scope.getUser = function(email) {
         var usuarios = $scope.getUsers();
+        if (!usuarios) {
+            return undefined;
+        }
+
         for (var i = 0; i < usuarios.length; i++) {
             if (usuarios[i].email === email) {
                 return usuarios[i];
@@ -108,15 +120,7 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
     };
 
     $scope.getUsers = function () {
-        var usuarios = [];
-
-        for (var i = 0; i < Message.all.length; i++) {
-            if (Message.all[i].isUsuario) {
-                usuarios.push(Message.all[i]);
-            }
-        }
-
-        return usuarios;
+        return DataService.usuarios.all;
     };
 
     var mapOptions = {
@@ -220,16 +224,11 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
 
     };
 
-    $scope.getUsuariosGame = function (game) {
-
-    };
-
     $scope.joinTheGame = function () {
-      Message.all.$add({
-          'game': ChatService.getGame().id,
-          'user': $scope.user.email,
-          'isX': true
-      });
+        DataService.matchs.create({
+            'game': ChatService.getGame().id,
+            'user': $scope.user
+        });
     };
 
     $scope.teco = false;
@@ -243,15 +242,14 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
     };
 
     $scope.isInGame = function(game) {
-        var xs = [];
+        if (!DataService.matchs.all) {
+            return false;
+        }
 
-        for (var i = 0; i < Message.all.length; i++) {
-            if (Message.all[i].isX) {
-                var x = Message.all[i];
-                xs.push(x);
-                if (game.id === x.game && $scope.user.email === x.user) {
-                    return true;
-                }
+        for (var i = 0; i < DataService.matchs.all.length; i++) {
+            var x = DataService.matchs.all[i];
+            if (game.id === x.game && $scope.user.email === x.user) {
+                return true;
             }
         }
     } ;
@@ -570,19 +568,19 @@ angular.module('playpalApp').factory('playpalSrvc', function($http, $q) {
 
 });
 
-app.controller('chatController', ['$scope','Message', 'ChatService', function($scope, Message, ChatService){
+app.controller('chatController', ['$scope','DataService', 'ChatService', function($scope, DataService, ChatService){
 
     $scope.user="Guest";
 
-    $scope.messages= Message.all;
+    $scope.messages= DataService.mensagens.all;
 
     $scope.getMensagens = function () {
         var game = ChatService.getGame();
         var msgs = [];
 
-        for (var i = 0; i < $scope.messages.length; i++) {
-            if (!$scope.messages[i].isUsuario && $scope.messages[i].hash === game.id) {
-                msgs.push($scope.messages[i]);
+        for (var i = 0; i < DataService.mensagens.all.length; i++) {
+            if (DataService.mensagens.all[i].gameId === game.id) {
+                msgs.push(DataService.mensagens.all[i]);
             }
         }
 
@@ -627,12 +625,6 @@ app.controller('chatController', ['$scope','Message', 'ChatService', function($s
         // return "" + data.toTimeString().split(' ')[0].slice(0, 5) + ChatService.ampm(ChatService.getGame().date);
         return "" + data.getHours() + ":" + (data.getMinutes() >= 10 ? data.getMinutes() : "0" + data.getMinutes());
     };
-    //
-    // Message.all.$add({
-    //     'game': ChatService.getGame().id,
-    //     'user': $scope.user.email,
-    //     'isX': true
-    // });
 
     $scope.contem = function(lista, item) {
         for (var i = 0; i < lista.length; i++) {
@@ -651,10 +643,11 @@ app.controller('chatController', ['$scope','Message', 'ChatService', function($s
         var game = ChatService.getGame();
         var jogadores = [];
 
-        for (var i = 0; i < $scope.messages.length; i++) {
-            var email =$scope.messages[i].user;
-            if ($scope.messages[i].isX && $scope.messages[i].game === game.id && !$scope.contem(jogadores, email)) {
-                jogadores.push(email);
+        for (var i = 0; i < DataService.matchs.all.length; i++) {
+            var match = DataService.matchs.all[i];
+
+            if (game.id === match.game) {
+                jogadores.push(match.user.name + " " + match.user.lastname);
             }
         }
 
@@ -678,8 +671,13 @@ app.controller('chatController', ['$scope','Message', 'ChatService', function($s
         return title;
     };
 
-    $scope.inserisci = function(message){
-        Message.create(message, ChatService.getUser(), ChatService.getGame().id);
+    $scope.inserisci = function(message) {
+        DataService.mensagens.create({
+            'text': message,
+            'user': ChatService.getUser(),
+            'gameId': ChatService.getGame().id,
+            'data': (new Date().toString())
+        });
         $scope.texto = undefined;
     };
 
@@ -689,31 +687,49 @@ app.controller('chatController', ['$scope','Message', 'ChatService', function($s
     };
 }]);
 
-app.factory('Message', ['$firebaseArray', '$firebaseArray',
-    function($firebaseArray, $firebaseArray) {
-        var ref = firebase.database().ref();
-        var messages = $firebaseArray(ref);
+function entidade(name, $firebaseArray) {
+    return (function($firebaseArray) {
+        var ref = firebase.database().ref(name);
+        var collection = $firebaseArray(ref);
 
-        var Message = {
-            all: messages,
-            create: function (message, autor, hash) {
-                return messages.$add({
-                    texto: message,
-                    autor: autor.email,
-                    data: new Date().toString(),
-                    hash: hash,
-                    isUsuario: false
-                });
+        return  {
+            all: collection,
+            create: function (data) {
+                return collection.$add(data);
             },
-            get: function (messageId) {
-                return messages.child(messageId).$asObject();
-            },
-            delete: function (message) {
-                return messages.$remove(message);
+            get: function (id) {
+                return collection.child(id).$asObject();
             }
         };
+    })($firebaseArray);
+}
 
-        return Message;
-
+app.factory('Mensagens', ['$firebaseArray',
+    function($firebaseArray) {
+        return entidade('mensagens', $firebaseArray);
     }
 ]);
+
+app.factory('Usuarios', ['$firebaseArray',
+    function($firebaseArray) {
+        return entidade('usuarios', $firebaseArray);
+    }
+]);
+
+app.factory('Matchs', ['$firebaseArray',
+    function($firebaseArray) {
+        return entidade('matchs', $firebaseArray);
+    }
+]);
+
+app.service("DataService", function(Mensagens, Usuarios, Matchs) {
+    var self = this;
+
+    this.mensagens = Mensagens;
+
+    this.usuarios = Usuarios;
+
+    this.matchs = Matchs;
+
+    return this;
+});

@@ -25,6 +25,16 @@
                                    name="password"
                                    type="password" value="">
                         </div>
+                        <div ng-if="isCreateUser" class="form-group">
+                            <input ng-model="user.name " class="form-control" placeholder="Name"
+                                   name="name"
+                                   type="text" value="">
+                        </div>
+                        <div ng-if="isCreateUser" class="form-group">
+                            <input ng-model="user.lastname " class="form-control" placeholder="Last name"
+                                   name="text"
+                                   type="text" value="">
+                        </div>
                         <p ng-if="messageWrongpassord">{{ messageWrongpassord }}</p>
                         <!-- Change this to a button or input when using this as a form -->
                         <a href="javascript:;" ng-click="saveUser()" class="btn btn-sm btn-success">{{
