@@ -29,6 +29,11 @@ app.service('ChatService', [function() {
 angular.module('playpalApp').controller('gamesController', function ($scope, $timeout, $http, $q, ChatService, DataService, $uibModal) {
     //declaracao de variaveis
 
+    $scope.logout = function () {
+        localStorage.clear();
+        location.reload();
+        window.location.replace(window.location.origin = window.location.pathname);
+    };
 
     $scope.isCreateUser = false;
 
@@ -49,17 +54,27 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
     } else {
     }
 
+
+    $scope.estouLogado = function () {
+        console.log($scope.user);
+        return $scope.user !== undefined && $scope.user.email !== undefined && $scope.user.isUsuario !== undefined;
+    };
+
+
     $scope.messageWrongpassord = undefined;
 
 
     $scope.saveUser = function () {
-        if (!$scope.user.name 
-            || !$scope.user.lastname 
-            || !$scope.user.email 
-            || !$scope.user.password) {
+        if ($scope.getLoginMessage() !== "Sign in") {
+            if (!$scope.user.name
+                || !$scope.user.lastname
+                || !$scope.user.email
+                || !$scope.user.password) {
                 $scope.messageWrongpassord = "Required fields not filled";
                 return;
+            }
         }
+
 
         if ($scope.user.email && $scope.user.password) {
             if ($scope.isCreateUser && $scope.hasUser($scope.user.email)) {
@@ -574,17 +589,20 @@ app.controller('chatController', ['$scope','DataService', 'ChatService', functio
 
     $scope.messages= DataService.mensagens.all;
 
+    $scope.mensagensJogos = [];
+
     $scope.getMensagens = function () {
         var game = ChatService.getGame();
-        var msgs = [];
+
+        $scope.mensagensJogos.splice(0, $scope.mensagensJogos.length)
 
         for (var i = 0; i < DataService.mensagens.all.length; i++) {
             if (DataService.mensagens.all[i].gameId === game.id) {
-                msgs.push(DataService.mensagens.all[i]);
+                $scope.mensagensJogos.push(DataService.mensagens.all[i]);
             }
         }
 
-        return msgs;
+        return $scope.mensagensJogos;
     };
 
     $scope.showMap = false;

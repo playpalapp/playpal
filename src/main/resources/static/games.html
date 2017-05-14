@@ -130,11 +130,17 @@
     <!-- FINISH -->
     <div id="container">
         <div class="top_promo_block" id="promo_head">
-            <a href="index.html">
-                <div class="row">
-                    <img src="img/start/logo.png" style="margin-left: 20px;" alt="#/index.html">
+            <div class="row">
+                <div class="col-md-10">
+                    <a href="index.html">
+                        <img src="img/start/logo.png" style="margin-left: 20px;" alt="#/index.html">
+                    </a>
                 </div>
-            </a>
+                <div ng-if="estouLogado()" class="col-md-2" ng-click="logout()">
+                    <i class="fa fa-sign-out" style="color: white; padding-left: 80%; font-size: 2em" aria-hidden="true"></i>
+                </div>
+            </div>
+
             <div class="game_descrition">
                 
                 <div class="submit_button" style="text-align: center; padding-top: 2em;">
