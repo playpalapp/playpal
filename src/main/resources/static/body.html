@@ -1,0 +1,68 @@
+<div ng-controller="gamesController">
+    <!-- BEGIN -->
+    <!-- #modal-app cria jogo -->
+    <!-- #modal-app chat -->
+
+    <!-- #modal-app confirmação -->
+    <!-- FINISH -->
+    <div id="container">
+        <div class="top_promo_block" id="promo_head">
+            <div class="row">
+                <div class="col-md-10">
+                    <a href="index.html">
+                        <img src="img/start/logo.png" style="margin-left: 20px;" alt="#/index.html">
+                    </a>
+                </div>
+                <div ng-if="estouLogado()" class="col-md-2" ng-click="logout()">
+                    <i class="fa fa-sign-out" style="color: white; padding-left: 80%; font-size: 2em" aria-hidden="true"></i>
+                </div>
+            </div>
+
+            <div class="game_descrition">
+
+                <div class="submit_button" style="text-align: center; padding-top: 2em;">
+                    <div class="col-md-12">
+                        <a id="ad">
+                            <button type="button" style="width: 25%" class="btn btn-success-default" ng-click="startGame()">
+                                Start a Game
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-12 games">
+                    <div class="col-md-6 gamesList">
+                        <div ng-repeat="d in gameList">
+                            <div class="row cardHeader" style="margin-left: -1.1em; width: 111.5%;">
+                                <label style="font-weight: bold; color: white; font-size: 1.5em; padding-top: 0.2em; margin-left: 43.3%">{{
+                                    d }}</label>
+                            </div>
+                            <div class="row eventCard" ng-repeat="game in matchs[d]" ng-click="findGame(game)">
+                                <div class="col-md-4 cardSquare">
+                                    <!--<h2>{{game.date| date:"shortTime"}}</h2> -->
+                                    <h2>{{ getHours(game.date) }}:{{ getMin(game.date)}} {{ampm(game.date)}}</h2>
+                                    <h4>{{game.numberOfPlayers - game.players.length == 0? "FULL - 0" : "OPEN - " +
+                                        (game.numberOfPlayers - game.players.length)}}</h4>
+                                </div>
+                                <div class="col-md-8 cardDescription">
+                                    <h4><strong> Location:</strong> {{game.street}}, {{game.city}}, {{game.state}},
+                                        {{game.zipcode}}</h4>
+                                    <h4><strong> Gender:</strong> {{game.gender =="COED"?"Co-Ed":game.gender}}</h4>
+                                    <h4><strong> Intensity:</strong> {{game.intensityLevel}}</h4>
+                                </div>
+                                <button
+                                        ng-click="clicou(game, true)"
+                                        class="glyphicon glyphicon-envelope btn pull-right"
+                                        style="margin-right: 0.3em; margin-bottom: 0.3em"
+                                        data-target="{{ kiModal(game) }}"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 gamesList">
+                        <div id="map" style="position: inherit; width: 100%;
+    height: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
