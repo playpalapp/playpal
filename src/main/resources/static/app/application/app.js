@@ -88,6 +88,12 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
                 DataService.usuarios.create($scope.user);
                 window.localStorage.setItem('play-user', JSON.stringify($scope.user));
                 $scope.messageWrongpassord = undefined;
+
+                if ($scope.startingGame) {
+                    $scope.fechaModal();
+                    $scope.startGame();
+                    $scope.startingGame = false;
+                }
                 return;
             }
 
@@ -101,7 +107,14 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
                 $scope.messageWrongpassord = "You user or password not exist or is incorrect";
             } else {
                 $scope.user = usuario;
-                window.localStorage.setItem('play-user', JSON.stringify($scope.user));
+                window.localStorage.setItem('' +
+                    'play-user', JSON.stringify($scope.user));
+
+                if ($scope.startingGame) {
+                    $scope.fechaModal();
+                    $scope.startGame();
+                    $scope.startingGame = false;
+                }
             }
         }
     };
@@ -330,11 +343,32 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
             data: senddata
         }).
         success(function(response) {
+            $scope.fechaModal();
+
+            console.log("response", response);
+
+            var id = 0;
+            var chaves = Object.keys(response);
+            for (var i = 0; i < chaves.length; i++) {
+                dayMatch = response[chaves[i]];
+                id += dayMatch.length;
+            }
+
+            console.log("id", id);
+
+
+
+            DataService.matchs.create({
+                'game': id,
+                'user': $scope.user
+            });
+
             if(Object.keys(response).length  > 0){
                 $scope.matchs = response;
                 burn($scope.matchs);
                 $scope.gameList = Object.keys(response);
                 $scope.gameList.sort($scope.order);
+
                 $('#myModal').modal('toggle');
 
                 codeAddress($scope.newgame);
@@ -446,6 +480,27 @@ angular.module('playpalApp').controller('gamesController', function ($scope, $ti
     };
 
     $scope.modalVar = undefined;
+
+    $scope.startingGame = false;
+
+    $scope.startGame = function () {
+        $scope.startingGame = true;
+        // warning user.isUsuario
+
+        if ($scope.estouLogado()) {
+            $scope.modalVar = $uibModal.open({
+                templateUrl: 'modal-game.html',
+                scope: $scope
+            });
+        } else {
+            $scope.modalVar = $uibModal.open({
+                templateUrl: 'modal-login.html',
+                scope: $scope,
+                size: 50,
+                ariaLabelledBy: ''
+            });
+        }
+    };
 
     $scope.clicou = function (game, flag) {
         if (flag) {

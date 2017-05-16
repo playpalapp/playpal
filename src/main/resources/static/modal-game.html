@@ -1,0 +1,106 @@
+<div class="modal-header">
+    <button type="button" ng-click="fechaModal()" class="close" data-dismiss="modal"
+            aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title" style="text-align: center">Create Game</h4>
+</div>
+<div class="modal-body">
+    <span style="color:red" ng-show="form.error">Complete all the fields correctly</span>
+    <form>
+            <div class="row ">
+                <div class="col-md-6">
+                    <label>Name:
+                        <input ng-model="newgame.name" placeholder="Name" type="text" class="form-control">
+                    </label>
+                    <label>Intensity:
+                        <select ng-model="newgame.intensityLevel" class="form-control col-md-2">
+                            <option value="BEGINNER">Beginner</option>
+                            <option value="ADVANCED">Advanced</option>
+                            <option value="ALL">All</option>
+                        </select>
+                    </label>
+                    <label>Gender:
+                        <select ng-model="newgame.gender" class="form-control col-md-2">
+                            <option value="MALE">Male</option>
+                            <option value="FEMALE">Female</option>
+                            <option value="COED">Co-Ed</option>
+                        </select>
+                    </label>
+                    <label>Number of Players:
+                        <input type="number" min="1" ng-model="newgame.numberOfPlayers"
+                               class="form-control">
+                    </label>
+                    <label>Shirt Color #1:
+                        <input ng-model="newgame.shirtColorOne" placeholder="Shirt Color" type="text" class="form-control">
+                    </label>
+                    <label>Shirt Color #2:
+                        <input ng-model="newgame.shirtColorTwo" placeholder="Shirt Color" type="text" class="form-control">
+                    </label>
+                </div>
+                <div class="col-md-6">
+                    <label>Location:
+                        <input ng-model="newgame.street" placeholder="Street" type="text"
+                               class="form-control col-md-6">
+                        <input ng-model="newgame.city" placeholder="City" type="text"
+                               class="form-control col-md-6">
+                        <input ng-model="newgame.state" placeholder="State" type="text"
+                               class="form-control col-md-6">
+                        <input ng-model="newgame.zipcode" placeholder="Zipcode" type="text"
+                               class="form-control col-md-6">
+                    </label>
+                    <label>Date/Hour:
+
+                        <div class='input-group date' id='datetimepicker1'>
+                            <input id="inputdate" type="text" class="form-control"/>
+                            <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                        </div>
+
+                    </label>
+                    <label>Other Details
+                        <div class="input-group">
+                            <textarea style="height: 110px; width: 270px" ng-model="newgame.otherDetails"></textarea>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        <script type="text/javascript">
+
+                console.log("RUNNNG");
+                var DTP = $('#datetimepicker1').datetimepicker({
+                    daysOfWeekDisabled: [],
+                    defaultDate: new Date()
+                });
+
+                DTP.on("dp.change", function (e) {
+                    var antiga = new Date(e.oldDate._d);
+                    var atual = new Date(e.date._d);
+
+                    if (antiga.getHours() == 23 && atual.getHours() == 0) {
+                        atual.setDate(atual.getDate() - 1);
+
+                        $('#datetimepicker1').data("DateTimePicker").date(moment(atual).format('MM/DD/YYYY'));
+                        e.stopPropagation();
+                        return;
+                    }
+                    /*else if (antiga.getHours() == 0 && atual.getHours() == 23) {
+                     console.log("diminiu um dia", antiga.getDay() - atual.getDay());
+                     atual.setDate(antiga.getDay() + 1);
+                     $('#datetimepicker1').data("DateTimePicker").date(moment(atual).format('MM/DD/YYYY'));
+                     e.stopPropagation();
+                     return;
+                     }*/
+                });
+        </script>
+
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" ng-click="closeCreateGame(); fechaModal()" data-dismiss="modal">
+        Close
+    </button>
+    <button type="submit" class="btn btn-danger" ng-click="createGame()">Save Game</button>
+</div>
+
